@@ -1,0 +1,85 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    - name: 01 Servers Normal Load
+      id: servers-normal-load-01
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 01 Servers Normal Load
+        setup-command: ''
+        command: gradle test --tests MainTest.normalServersLoad01
+        timeout: 10
+        max-score: 7
+    - name: 02 Servers Broken Load
+      id: servers-broken-load-02
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 02 Servers Broken Load
+        setup-command: ''
+        command: gradle test --tests MainTest.brokenServersLoad02
+        timeout: 10
+        max-score: 7
+    - name: 03 Resource Groups Normal Load
+      id: resource-groups-normal-load-03
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 03 Resource Groups Normal Load
+        setup-command: ''
+        command: gradle test --tests MainTest.normalResourceGroupsLoad03
+        timeout: 10
+        max-score: 7
+    - name: 04 Resource Groups Broken Load
+      id: resource-groups-broken-load-04
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 04 Resource Groups Broken Load
+        setup-command: ''
+        command: gradle test --tests MainTest.brokenResourceGroupsLoad04
+        timeout: 10
+        max-score: 7
+    - name: 05 Listeners Load
+      id: listeners-load-05
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 05 Listeners Load
+        setup-command: ''
+        command: gradle test --tests MainTest.listenersLoad05
+        timeout: 10
+        max-score: 7
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        SERVERS-NORMAL-LOAD-01_RESULTS: "${{steps.servers-normal-load-01.outputs.result}}"
+        SERVERS-BROKEN-LOAD-02_RESULTS: "${{steps.servers-broken-load-02.outputs.result}}"
+        RESOURCE-GROUPS-NORAML-LOAD-03_RESULTS: "${{steps.resource-groups-normal-load-03.outputs.result}}"
+        RESOURCE-GROUP-BROKEN-LOAD-04_RESULTS: "${{steps.resource-groups-broken-load-04.outputs.result}}"
+        LISTENERS-LOAD-05_RESULTS: "${{steps.listeners-load-05.outputs.result}}"
+      with:
+        runners: servers-normal-load-01,servers-broken-load-02,resource-groups-normal-load-03,resource-groups-broken-load-04,listeners-load-05
+    - name: Upload Problems Report
+      if: failure() # This step runs only if the previous step fails
+      uses: actions/upload-artifact@v4
+      with:
+        name: problems-report
+        path: build/reports/problems/problems-report.html
+    - name: Upload Test Reports
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: build/reports/tests/test
