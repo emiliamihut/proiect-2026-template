@@ -14,7 +14,7 @@ REMOVE MEMBER: 87.92.104.1: name = Matei && role = Operator
 REMOVE MEMBER: Member not found: ipAddress = 87.92.104.1: name = Marius && role = Operator
 REMOVE MEMBER: Group not found: ipAddress = 87.92
 REMOVE MEMBER: MissingIpAddressException: Server IP Address was not provided. ## line no: 16
-FIND MEMBER: UserException: Name and role can't be empty. ## line no: 17
+REMOVE MEMBER: UserException: Name and role can't be empty. ## line no: 17
 FIND GROUP: Group not found: ipAddress = 87.92
 FIND GROUP: 87.92.104.1
 FIND GROUP: MissingIpAddressException: Server IP Address was not provided. ## line no: 20
