@@ -14,8 +14,8 @@ Am impartit tot pe pachete ca sa fie mai usor de gasit lucrurile:
 - `database/` - baza de date (am facut-o singleton)
 - `exceptions/` - erorile custom
 - `observers/` - pentru pattern-ul Observer
-- `enums/` - tipurile (AlertType, Severity etc)
 - `factories/` - factory pentru useri
+- tipurile (AlertType, Severity etc)
 
 ## Design Patterns
 
