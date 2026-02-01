@@ -1,8 +1,8 @@
 package org.example.commands;
 
 import org.example.database.Database;
-import org.example.enums.AlertType;
-import org.example.enums.Severity;
+import org.example.AlertType;
+import org.example.Severity;
 import org.example.exceptions.MissingIpAddressException;
 import org.example.models.Alert;
 import org.example.models.Event;

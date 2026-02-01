@@ -1,7 +1,7 @@
 package org.example.models;
 
-import org.example.enums.AlertType;
-import org.example.enums.Severity;
+import org.example.AlertType;
+import org.example.Severity;
 
 // alerta de sistem
 public class Alert {
