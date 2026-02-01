@@ -1,9 +1,9 @@
-package org.example;
+package org.example.enums;
 
 public enum PathTypes {
+    SERVERS("servers"),
     GROUPS("groups"),
-    LISTENER("listener"),
-    SERVERS("servers");
+    LISTENER("listeners");
 
     private final String value;
 
@@ -12,6 +12,7 @@ public enum PathTypes {
     }
 
     public String getValue() {
-        return this.value;
+        return value;
     }
 }
+

@@ -1,5 +1,5 @@
 import org.example.Main;
-import org.example.PathTypes;
+import org.example.enums.PathTypes;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
