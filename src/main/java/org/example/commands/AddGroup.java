@@ -3,7 +3,6 @@ package org.example.commands;
 import org.example.database.Database;
 import org.example.exceptions.MissingIpAddressException;
 import org.example.models.ResourceGroup;
-import org.example.models.Server;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,21 +24,6 @@ public class AddGroup implements Command {
                 throw new MissingIpAddressException();
             }
 
-            // verifica daca exista serverul
-            boolean serverExists = false;
-            Database database = Database.getInstance();
-            for (Server server : database.getServers()) {
-                if (server.getIpAddress().equals(ip)) {
-                    serverExists = true;
-                    break;
-                }
-            }
-
-            if (!serverExists) {
-                writer.write("ADD GROUP: Server not found: ipAddress = " + ip);
-                writer.newLine();
-                return;
-            }
 
             // creeaza grup nou
             ResourceGroup group = new ResourceGroup(ip);
