@@ -20,8 +20,8 @@ public class AddServer implements Command {
     @Override
     public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            // verifica ca avem destule date
-            if (tokens.length < 15) {
+            // verifica ca avem destule date (minim 14 pentru campurile obligatorii)
+            if (tokens.length < 14) {
                 throw new UserException("Invalid input format.");
             }
 
@@ -72,7 +72,7 @@ public class AddServer implements Command {
             }
 
             Integer cpuCores = null;
-            if (!tokens[14].trim().isEmpty()) {
+            if (tokens.length > 14 && !tokens[14].trim().isEmpty()) {
                 try {
                     cpuCores = Integer.parseInt(tokens[14].trim());
                 } catch (NumberFormatException ignored) {
@@ -80,17 +80,17 @@ public class AddServer implements Command {
             }
 
             Integer ramGb = null;
-            if (!tokens[14].trim().isEmpty()) {
+            if (tokens.length > 15 && !tokens[15].trim().isEmpty()) {
                 try {
-                    ramGb = Integer.parseInt(tokens[14].trim());
+                    ramGb = Integer.parseInt(tokens[15].trim());
                 } catch (NumberFormatException ignored) {
                 }
             }
 
             Integer storageGb = null;
-            if (!tokens[15].trim().isEmpty()) {
+            if (tokens.length > 16 && !tokens[16].trim().isEmpty()) {
                 try {
-                    storageGb = Integer.parseInt(tokens[15].trim());
+                    storageGb = Integer.parseInt(tokens[16].trim());
                 } catch (NumberFormatException ignored) {
                 }
             }
