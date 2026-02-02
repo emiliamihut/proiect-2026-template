@@ -20,7 +20,7 @@ public class AddServer implements Command {
     @Override
     public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            // verifica ca avem destule date (minim 14 pentru campurile obligatorii)
+            // verifica ca avem destule date
             if (tokens.length < 14) {
                 throw new UserException("Invalid input format.");
             }
