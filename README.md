@@ -8,14 +8,14 @@ Am facut un sistem pentru gestionarea centrelor de date care imi permite sa adau
 
 ## Cum am organizat codul
 
-Am impartit tot pe pachete ca sa fie mai usor de gasit lucrurile:
+Am impartit pe pachete ca sa fie mai usor de gasit lucrurile:
 - `commands/` - toate comenzile (adauga server, cauta membru etc)
 - `models/` - clasele pentru entitati (Server, User, Alert)
 - `database/` - baza de date (am facut-o singleton)
 - `exceptions/` - erorile custom
 - `observers/` - pentru pattern-ul Observer
 - `factories/` - factory pentru useri
-- tipurile (AlertType, Severity etc)
+- enumurile (AlertType, Severity etc)
 
 ## Entitatile principale
 
@@ -214,7 +214,7 @@ for (User u : group.getMembers()) {
 }
 ```
 
-## Cum tratez erorile
+## Erori
 
 Am 3 exceptii custom:
 - `MissingIpAddressException` - cand lipseste IP-ul
@@ -228,7 +228,7 @@ ADD SERVER: MissingIpAddressException: Server IP Address was not provided. ## li
 
 ## Cum functioneaza Main-ul
 
-1. Citeste argumentele (tip fisier si cai)
+1. Citeste argumentele (tip fisier si paths)
 2. Daca e "LISTENERS" proceseaza 3 fisiere (servers, groups, listeners)
 3. Pentru fiecare tip de fisier (SERVERS, GROUPS, LISTENERS):
    - Deschide fisierul de input si pe cel de output
