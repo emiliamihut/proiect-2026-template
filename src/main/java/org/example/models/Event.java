@@ -3,15 +3,11 @@ package org.example.models;
 // eveniment pentru notificare
 public class Event {
     private final String ipAddress;
-    private final String type;
-    private final String severity;
-    private final String message;
+    private final Alert alert;
 
-    public Event(String ipAddress, String type, String severity, String message) {
+    public Event(String ipAddress, Alert alert) {
         this.ipAddress = ipAddress;
-        this.type = type;
-        this.severity = severity;
-        this.message = message;
+        this.alert = alert;
     }
 
     public String getIpAddress() {
@@ -20,8 +16,8 @@ public class Event {
 
     @Override
     public String toString() {
-        return "EVENT: " + ipAddress + ": type = " + type +
-               " && severity = " + severity + " && message = " + message;
+        return "EVENT: " + ipAddress + ": type = " + alert.getType() +
+               " && severity = " + alert.getSeverity() + " && message = " + alert.getMessage();
     }
 }
 

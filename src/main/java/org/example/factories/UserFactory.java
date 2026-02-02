@@ -12,8 +12,15 @@ public class UserFactory {
 
         // creeaza admin daca e cazul
         if (role.equalsIgnoreCase("Admin")) {
-            return new Admin(name, role, email, department,
-                           Integer.parseInt(clearanceLevel));
+            int level = 0;
+            try {
+                if (clearanceLevel != null && !clearanceLevel.isEmpty()) {
+                    level = Integer.parseInt(clearanceLevel);
+                }
+            } catch (NumberFormatException e) {
+                level = 0;
+            }
+            return new Admin(name, role, email, department, level);
         }
 
         // creeaza operator daca e cazul

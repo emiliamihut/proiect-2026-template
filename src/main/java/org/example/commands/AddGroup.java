@@ -3,24 +3,42 @@ package org.example.commands;
 import org.example.database.Database;
 import org.example.exceptions.MissingIpAddressException;
 import org.example.models.ResourceGroup;
+import org.example.models.Server;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class AddGroup {
+// clasa pentru comanda de adaugare grup
+public class AddGroup implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
+            // verifica ca avem destule date
             if (tokens.length < 2) {
                 throw new MissingIpAddressException();
             }
 
+            // extrage adresa IP
             String ip = tokens[1].trim();
-
             if (ip.isEmpty()) {
                 throw new MissingIpAddressException();
+            }
+
+            // verifica daca exista serverul
+            boolean serverExists = false;
+            Database database = Database.getInstance();
+            for (Server server : database.getServers()) {
+                if (server.getIpAddress().equals(ip)) {
+                    serverExists = true;
+                    break;
+                }
+            }
+
+            if (!serverExists) {
+                writer.write("ADD GROUP: Server not found: ipAddress = " + ip);
+                writer.newLine();
+                return;
             }
 
             // creeaza grup nou
@@ -39,4 +57,3 @@ public class AddGroup {
         }
     }
 }
-

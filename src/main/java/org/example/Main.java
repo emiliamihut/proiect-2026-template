@@ -15,17 +15,17 @@ public class Main {
 
         // pentru listeners trebuie procesat in ordine: servers, groups, listeners
         if (type.equals("listeners") && filePaths.length == 3) {
-            processFile("servers", filePaths[0]);
-            processFile("groups", filePaths[1]);
-            processFile("listeners", filePaths[2]);
+            processFile(filePaths[0]);
+            processFile(filePaths[1]);
+            processFile(filePaths[2]);
         } else {
             for (String path : filePaths) {
-                processFile(type, path);
+                processFile(path);
             }
         }
     }
 
-    private static void processFile(String type, String filePath) {
+    private static void processFile(String filePath) {
         try {
             File inputFile = new File(filePath + ".in");
             File outputFile = new File(filePath + ".out");
@@ -43,23 +43,29 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
 
+                String[] tokens = line.split("\\|");
+                Command command = null;
+
                 if (line.startsWith("ADD SERVER")) {
-                    String[] tokens = line.split("\\|");
-                    AddServer.execute(tokens, lineNumber, writer);
+                    command = new AddServer();
                 } else if (line.startsWith("ADD GROUP")) {
-                    AddGroup.execute(line, lineNumber, writer);
+                    command = new AddGroup();
                 } else if (line.startsWith("ADD MEMBER")) {
-                    AddMember.execute(line, lineNumber, writer);
+                    command = new AddMember();
                 } else if (line.startsWith("FIND MEMBER")) {
-                    FindMember.execute(line, lineNumber, writer);
+                    command = new FindMember();
                 } else if (line.startsWith("REMOVE MEMBER")) {
-                    RemoveMember.execute(line, lineNumber, writer);
+                    command = new RemoveMember();
                 } else if (line.startsWith("FIND GROUP")) {
-                    FindGroup.execute(line, lineNumber, writer);
+                    command = new FindGroup();
                 } else if (line.startsWith("REMOVE GROUP")) {
-                    RemoveGroup.execute(line, lineNumber, writer);
+                    command = new RemoveGroup();
                 } else if (line.startsWith("ADD EVENT")) {
-                    AddEvent.execute(line, lineNumber, writer);
+                    command = new AddEvent();
+                }
+
+                if (command != null) {
+                    command.execute(tokens, lineNumber, writer);
                 }
             }
 
@@ -67,7 +73,7 @@ public class Main {
             writer.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error processing file: " + e.getMessage());
         }
     }
 }

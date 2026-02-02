@@ -7,12 +7,12 @@ import org.example.models.ResourceGroup;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class RemoveGroup {
+// clasa pentru comanda de eliminare grup
+public class RemoveGroup implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
             if (tokens.length < 2) {
                 throw new MissingIpAddressException();
             }
@@ -24,14 +24,10 @@ public class RemoveGroup {
             }
 
             Database db = Database.getInstance();
-
-            ResourceGroup group = null;
-            for (ResourceGroup g : db.getResourceGroups()) {
-                if (g.getIpAddress().equals(ip)) {
-                    group = g;
-                    break;
-                }
-            }
+            ResourceGroup group = db.getResourceGroups().stream()
+                    .filter(g -> g.getIpAddress().equals(ip))
+                    .findFirst()
+                    .orElse(null);
 
             if (group == null) {
                 writer.write("REMOVE GROUP: Group not found: ipAddress = " + ip);
@@ -40,16 +36,15 @@ public class RemoveGroup {
             }
 
             db.getResourceGroups().remove(group);
-
             writer.write("REMOVE GROUP: " + ip);
             writer.newLine();
 
         } catch (Exception e) {
             try {
-                writer.write("REMOVE GROUP: " + e.getClass().getSimpleName() + ": " + e.getMessage() + " ## line no: " + lineNumber);
+                writer.write("REMOVE GROUP: " + e.getClass().getSimpleName() +
+                           ": " + e.getMessage() + " ## line no: " + lineNumber);
                 writer.newLine();
             } catch (IOException ignored) {}
         }
     }
 }
-

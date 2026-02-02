@@ -7,18 +7,16 @@ import org.example.models.ResourceGroup;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class FindGroup {
+public class FindGroup implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
             if (tokens.length < 2) {
                 throw new MissingIpAddressException();
             }
 
             String ip = tokens[1].trim();
-
             if (ip.isEmpty()) {
                 throw new MissingIpAddressException();
             }
@@ -42,12 +40,13 @@ public class FindGroup {
             writer.write("FIND GROUP: " + ip);
             writer.newLine();
 
+
         } catch (Exception e) {
             try {
-                writer.write("FIND GROUP: " + e.getClass().getSimpleName() + ": " + e.getMessage() + " ## line no: " + lineNumber);
+                writer.write("FIND GROUP: " + e.getClass().getSimpleName() +
+                        ": " + e.getMessage() + " ## line no: " + lineNumber);
                 writer.newLine();
             } catch (IOException ignored) {}
         }
     }
 }
-

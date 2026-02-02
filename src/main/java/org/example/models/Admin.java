@@ -12,5 +12,10 @@ public class Admin extends Operator {
     public int getClearanceLevel() {
         return clearanceLevel;
     }
-}
 
+    @Override
+    public String toString() {
+        return "Admin{name='" + getName() + "', role='" + getRole() + "', email='" + getEmail() +
+               "', department='" + getDepartment() + "', clearanceLevel=" + clearanceLevel + "}";
+    }
+}

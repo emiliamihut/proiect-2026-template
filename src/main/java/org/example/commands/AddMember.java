@@ -1,21 +1,21 @@
 package org.example.commands;
 
 import org.example.database.Database;
-import org.example.exceptions.MissingIpAddressException;
 import org.example.exceptions.UserException;
-import org.example.factories.UserFactory;
 import org.example.models.ResourceGroup;
 import org.example.models.User;
+import org.example.exceptions.MissingIpAddressException;
+import org.example.factories.UserFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class AddMember {
+// clasa pentru comanda de adaugare membru
+public class AddMember implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
             if (tokens.length < 4) {
                 throw new UserException("Name and role can't be empty.");
             }
@@ -25,8 +25,6 @@ public class AddMember {
             String name = tokens[2].trim();
             String role = tokens[3].trim();
             String email = tokens.length > 4 ? tokens[4].trim() : "";
-            String department = tokens.length > 5 ? tokens[5].trim() : "";
-            String clearanceLevel = tokens.length > 6 ? tokens[6].trim() : "";
 
             // valideaza
             if (ip.isEmpty()) {
@@ -53,8 +51,12 @@ public class AddMember {
                 return;
             }
 
-            // adauga user in grup
+            // cauta membrul in grup
+            String department = "";
+            String clearanceLevel = "0";
             User user = UserFactory.createUser(name, role, email, department, clearanceLevel);
+
+
             group.addMember(user);
 
             writer.write("ADD MEMBER: " + ip + ": name = " + name + " && role = " + role);
@@ -68,4 +70,3 @@ public class AddMember {
         }
     }
 }
-

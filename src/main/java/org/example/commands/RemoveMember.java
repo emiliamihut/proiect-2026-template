@@ -9,12 +9,12 @@ import org.example.models.User;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class RemoveMember {
+// clasa pentru comanda de eliminare membru
+public class RemoveMember implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
             if (tokens.length < 4) {
                 throw new UserException("Name and role can't be empty.");
             }
@@ -26,6 +26,7 @@ public class RemoveMember {
             if (ip.isEmpty()) {
                 throw new MissingIpAddressException();
             }
+
             if (name.isEmpty() || role.isEmpty()) {
                 throw new UserException("Name and role can't be empty.");
             }
@@ -69,10 +70,10 @@ public class RemoveMember {
 
         } catch (Exception e) {
             try {
-                writer.write("REMOVE MEMBER: " + e.getClass().getSimpleName() + ": " + e.getMessage() + " ## line no: " + lineNumber);
+                writer.write("REMOVE MEMBER: " + e.getClass().getSimpleName() +
+                           ": " + e.getMessage() + " ## line no: " + lineNumber);
                 writer.newLine();
             } catch (IOException ignored) {}
         }
     }
 }
-

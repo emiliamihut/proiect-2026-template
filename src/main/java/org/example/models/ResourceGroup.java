@@ -25,6 +25,10 @@ public class ResourceGroup implements Observer {
         members.add(user);
     }
 
+    public void removeMember(User user) {
+        members.remove(user);
+    }
+
     public Set<User> getMembers() {
         return members;
     }
@@ -43,4 +47,3 @@ public class ResourceGroup implements Observer {
         }
     }
 }
-

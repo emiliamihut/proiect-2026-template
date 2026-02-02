@@ -9,12 +9,12 @@ import org.example.models.User;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class FindMember {
+// clasa pentru comanda de cautare membru
+public class FindMember implements Command {
 
-    public static void execute(String line, int lineNumber, BufferedWriter writer) {
+    @Override
+    public void execute(String[] tokens, int lineNumber, BufferedWriter writer) {
         try {
-            String[] tokens = line.split("\\|");
-
             if (tokens.length < 4) {
                 throw new UserException("Name and role can't be empty.");
             }
@@ -26,13 +26,14 @@ public class FindMember {
             if (ip.isEmpty()) {
                 throw new MissingIpAddressException();
             }
+
             if (name.isEmpty() || role.isEmpty()) {
                 throw new UserException("Name and role can't be empty.");
             }
 
             Database db = Database.getInstance();
 
-            // cauta grupul cu ip-ul dat
+            // cauta grupul
             ResourceGroup group = null;
             for (ResourceGroup g : db.getResourceGroups()) {
                 if (g.getIpAddress().equals(ip)) {
@@ -59,11 +60,10 @@ public class FindMember {
             if (!found) {
                 writer.write("FIND MEMBER: Member not found: ipAddress = " + ip + ": name = " + name + " && role = " + role);
                 writer.newLine();
-                return;
+            } else {
+                writer.write("FIND MEMBER: " + ip + ": name = " + name + " && role = " + role);
+                writer.newLine();
             }
-
-            writer.write("FIND MEMBER: " + ip + ": name = " + name + " && role = " + role);
-            writer.newLine();
 
         } catch (Exception e) {
             try {
@@ -74,4 +74,3 @@ public class FindMember {
         }
     }
 }
-
